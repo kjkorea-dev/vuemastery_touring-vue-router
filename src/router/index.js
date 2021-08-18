@@ -14,7 +14,9 @@ const routes = [
     props: route => ({ page: parseInt(route.query.page) || 1 })
   },
   {
-    path: '/event/:id',
+    path: '/events/:id',
+    /* Alias */
+    // alias: '/event/:id',
     name: 'EventLayout',
     props: route => ({ id: parseInt(route.params.id) }),
     component: EventLayout,
@@ -36,6 +38,22 @@ const routes = [
       }
     ]
   },
+  /* Redirect with chidren */
+  // {
+  //   path: '/event/:id',
+  //   redirect: { name: 'EventDetails' },
+  //   children: [
+  //     { path: 'register', redirect: { name: 'EventRegister' } },
+  //     { path: 'edit', redirect: { name: 'EventEdit' } }
+  //   ]
+  // },
+  /* Redirect with wildcard */
+  // {
+  //   path: '/event/:afterEvent(.*)',
+  //   redirect: to => {
+  //     return { path: '/events/' + to.params.afterEvent }
+  //   }
+  // },
   {
     path: '/about',
     name: 'About',
