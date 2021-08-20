@@ -24,7 +24,6 @@
 <script>
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
-import NProgress from 'nprogress'
 
 export default {
   name: 'EventList',
@@ -48,7 +47,6 @@ export default {
    * [Vue warn]: The "next" callback was never called inside of "beforeRouteEnter"
    * */
   /* beforeRouteEnter(routeTo, routeFrom, next) {
-    NProgress.start()
     EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then(response => {
         next(comp => {
@@ -59,13 +57,9 @@ export default {
       .catch(() => {
         next({ name: 'NetworkError' })
       })
-      .finally(() => {
-        NProgress.done()
-      })
   }, */
   async beforeRouteEnter(routeTo, routeFrom, next) {
     try {
-      NProgress.start()
       const response = await EventService.getEvents(
         2,
         parseInt(routeTo.query.page) || 1
@@ -76,22 +70,16 @@ export default {
       })
     } catch (e) {
       next({ name: 'NetworkError' })
-    } finally {
-      NProgress.done()
     }
   },
   beforeRouteUpdate() {
-    NProgress.start()
-    EventService.getEvents(2, this.page)
+    return EventService.getEvents(2, this.page)
       .then(response => {
         this.events = response.data
         this.totalEvents = response.headers['x-total-count']
       })
       .catch(() => {
         return { name: 'NetworkError' }
-      })
-      .finally(() => {
-        NProgress.done()
       })
   },
   computed: {
